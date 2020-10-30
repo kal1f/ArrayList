@@ -14,7 +14,7 @@ public class MyListImpl<T> implements MyList<T> {
     }
 
     @Override
-    public void add(Object element) {
+    public void add(T element) {
         if(size < elementData.length) {
             elementData[size] = element;
             size++;
@@ -27,6 +27,34 @@ public class MyListImpl<T> implements MyList<T> {
     }
 
     @Override
+    public void add(int index, T element) {
+        try {
+            if (size == elementData.length) {
+                enlarge();
+                int numMoved = size - index;
+                System.arraycopy(elementData, index, elementData, index + 1, numMoved);
+                elementData[index] = element;
+                size++;
+            }
+            else {
+                while(index > elementData.length) {
+                    enlarge();
+                }
+                elementData[index] = element;
+                size++;
+            }
+        }
+        catch (IndexOutOfBoundsException ex) {
+            System.out.println("Index is less than 0");
+        }
+    }
+
+    @Override
+    public void addAll(MyList<? extends T> c) {
+        c.forEach(this::add);
+    }
+
+    @Override
     public void enlarge() {
         Object[] oldData = elementData;
         int newCapacity = (elementData.length * 3) / 2 + 1;
@@ -35,7 +63,7 @@ public class MyListImpl<T> implements MyList<T> {
     }
 
     @Override
-    public void trim() {
+    public void trimToSize() {
         Object[] oldData = elementData;
         elementData = new Object[size];
         System.arraycopy(oldData, 0, elementData, 0, size);
@@ -62,9 +90,9 @@ public class MyListImpl<T> implements MyList<T> {
     }
 
     @Override
-    public Object get(int index) {
+    public T get(int index) {
         if(index >= 0 && index <= elementData.length - 1) {
-            return elementData[index];
+            return (T) elementData[index];
         }
         else {
             return null;
@@ -104,10 +132,6 @@ public class MyListImpl<T> implements MyList<T> {
         };
 
         return it;
-    }
-
-    void addAll(MyList<? extends T> c) {
-        c.forEach(this::add);
     }
 
 }

@@ -14,7 +14,7 @@ public class Main {
         System.out.println(acc1.get(1));
         acc1.delete(0);
         System.out.println(acc1.get(0));
-        acc1.trim();
+        acc1.trimToSize();
         acc1.add(5);
         System.out.println(acc1.get(2));
         acc1.add(123);
@@ -33,6 +33,12 @@ public class Main {
             acc2.add(i);
         }
         acc1.addAll(acc2);
-        acc1.trim();
+        for(int i=0; i<5;i++) {
+            acc2.add(i);
+        }
+        acc2.add(1, 1000);
+        acc2.add(-1, 2000);
+        acc2.add(40,3000);
+        System.out.println(acc2.indexOf(3000));
     }
 }
