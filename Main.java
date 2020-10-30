@@ -40,5 +40,6 @@ public class Main {
         acc2.add(-1, 2000);
         acc2.add(40,3000);
         System.out.println(acc2.indexOf(3000));
+        System.out.println(acc2.indexOf(null));
     }
 }

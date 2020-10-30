@@ -52,6 +52,7 @@ public class MyListImpl<T> implements MyList<T> {
     @Override
     public void addAll(MyList<? extends T> c) {
         c.forEach(this::add);
+        /*System.arraycopy(c, 0, elementData, this.size, );*/
     }
 
     @Override
@@ -101,6 +102,9 @@ public class MyListImpl<T> implements MyList<T> {
 
     @Override
     public int indexOf(Object element) {
+        if(element == null) {
+            return -1;
+        }
         for (int index = 0; index < elementData.length - 1; index++) {
             if (element.equals(elementData[index])) {
                 return index;
