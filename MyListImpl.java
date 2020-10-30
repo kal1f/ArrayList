@@ -1,30 +1,27 @@
 import java.util.Iterator;
 
-public class MyListClass<T> implements MyList, Iterable {
+public class MyListImpl<T> implements MyList<T> {
 
     private static final int DEFAULT_CAPACITY = 10;
     private int size = 0;
-    private int capacity;
     private Object[] elementData;
 
-    public MyListClass(){
-        elementData = (T[]) new Object[DEFAULT_CAPACITY];
-        this.capacity = DEFAULT_CAPACITY;
+    public MyListImpl(){
+        elementData = new Object[DEFAULT_CAPACITY];
     }
-    public MyListClass(int capacity){
-        elementData = (T[]) new Object[capacity];
-        this.capacity = capacity;
+    public MyListImpl(int capacity){
+        elementData = new Object[capacity];
     }
 
     @Override
     public void add(Object element) {
-        if(size < capacity) {
-            elementData[size] = (T) element;
+        if(size < elementData.length) {
+            elementData[size] = element;
             size++;
         }
         else {
             enlarge();
-            elementData[size] = (T) element;
+            elementData[size] = element;
             size++;
         }
     }
@@ -32,25 +29,25 @@ public class MyListClass<T> implements MyList, Iterable {
     @Override
     public void enlarge() {
         Object[] oldData = elementData;
-        int newCapacity = (capacity * 3) / 2 + 1;
-        capacity = newCapacity;
-        elementData = (T[]) new Object[capacity];
+        int newCapacity = (elementData.length * 3) / 2 + 1;
+        elementData = new Object[newCapacity];
         System.arraycopy(oldData, 0, elementData, 0, size);
     }
 
     @Override
     public void trim() {
-        System.arraycopy(elementData, 0, elementData, 0, size);
+        Object[] oldData = elementData;
+        elementData = new Object[size];
+        System.arraycopy(oldData, 0, elementData, 0, size);
     }
 
     @Override
     public boolean delete(int index) {
-        if(index >= 0 && index <= capacity - 1) {
+        if(index >= 0 && index <= elementData.length - 1) {
             int numMoved = size - index - 1;
             System.arraycopy(elementData, index + 1, elementData, index, numMoved);
-            capacity--;
-            elementData[size] = null;
             size--;
+            elementData[size] = null;
             return true;
         }
         else {
@@ -61,22 +58,12 @@ public class MyListClass<T> implements MyList, Iterable {
 
     @Override
     public boolean delete(Object element) {
-        for(int index=0; index < capacity - 1; index++) {
-            if(element.equals(elementData[index])) {
-                int numMoved = size - index - 1;
-                System.arraycopy(elementData, index + 1, elementData, index, numMoved);
-                capacity--;
-                elementData[index] = null;
-                size--;
-                return true;
-            }
-        }
-        return false;
+        return delete(indexOf(element));
     }
 
     @Override
     public Object get(int index) {
-        if(index >= 0 && index <= capacity-1) {
+        if(index >= 0 && index <= elementData.length - 1) {
             return elementData[index];
         }
         else {
@@ -86,7 +73,7 @@ public class MyListClass<T> implements MyList, Iterable {
 
     @Override
     public int indexOf(Object element) {
-        for (int index = 0; index < capacity - 1; index++) {
+        for (int index = 0; index < elementData.length - 1; index++) {
             if (element.equals(elementData[index])) {
                 return index;
             }
@@ -119,5 +106,8 @@ public class MyListClass<T> implements MyList, Iterable {
         return it;
     }
 
-}
+    void addAll(MyList<? extends T> c) {
+        c.forEach(this::add);
+    }
 
+}

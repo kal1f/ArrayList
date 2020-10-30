@@ -1,10 +1,14 @@
 public class Main {
 
     public static void main(String[] args) {
-        MyListClass<Integer> acc1 = new MyListClass<Integer>();
+        MyListImpl<Number> acc1 = new MyListImpl<Number>();
         acc1.add(1);
         acc1.add(2);
         acc1.add(32);
+        acc1.add(12);
+        for(int i = 0; i < 12; i++){
+            acc1.add(i);
+        }
         System.out.println(acc1.indexOf(1));
         System.out.println(acc1.contains(3));
         System.out.println(acc1.get(1));
@@ -19,11 +23,16 @@ public class Main {
         for(Object obj : acc1) {
             System.out.println(obj);
         }
-        acc1.add("21");
+        acc1.add(3213.123);
         for(Object obj: acc1) {
             System.out.println(obj);
         }
         acc1.forEach(System.out :: println);
-
+        MyListImpl<Integer> acc2 = new MyListImpl<Integer>();
+        for(int i = 5;i > 0;i--) {
+            acc2.add(i);
+        }
+        acc1.addAll(acc2);
+        acc1.trim();
     }
 }
